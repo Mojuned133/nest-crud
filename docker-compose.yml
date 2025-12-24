@@ -1,0 +1,58 @@
+# version: '3.9'
+
+# services:
+#   api:
+#     build: .
+#     container_name: nest-crud-api
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - mongo
+#     environment:
+#       MONGO_URI: mongodb://mongo:27017/nest_crud
+#     volumes:
+#       - .:/app
+#     command: node dist/main.js
+
+#   mongo:
+#     image: mongo:7
+#     container_name: nest-crud-mongo
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+
+# volumes:
+#   mongo_data:
+
+
+
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # use dev Dockerfile
+    container_name: nest-crud-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/nest_crud
+    volumes:
+      - .:/app           # mount local code to container
+      - /app/node_modules  # prevent host node_modules overwriting container's
+    command: pnpm run start:dev  # hot reload
+
+  mongo:
+    image: mongo:7
+    container_name: nest-crud-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
