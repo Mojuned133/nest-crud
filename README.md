@@ -1,99 +1,165 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS CRUD Application with MongoDB (Dockerized)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a simple **NestJS CRUD application** connected to **MongoDB**, fully containerized using **Docker** and **Docker Compose**. This README provides step-by-step instructions for running the project in **development** and **production** environments.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Prerequisites](#prerequisites)
+- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [Development Setup](#development-setup)
+- [Production Setup](#production-setup)
+- [Docker Compose Setup](#docker-compose-setup)
+- [Making Code Changes](#making-code-changes)
+- [Cleanup](#cleanup)
+- [Troubleshooting](#troubleshooting)
+- [References](#references)
 
-## Project setup
+---
 
-```bash
-$ pnpm install
-```
+## Prerequisites
 
-## Compile and run the project
+Before running the project, make sure you have:
 
-```bash
-# development
-$ pnpm run start
+- [Docker](https://docs.docker.com/get-docker/) installed
+- [Docker Compose](https://docs.docker.com/compose/install/) installed
+- Optionally, [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed for local development
 
-# watch mode
-$ pnpm run start:dev
+---
 
-# production mode
-$ pnpm run start:prod
-```
+## Project Structure
 
-## Run tests
+.
+├── src/ # Source code
+├── test/ # Test files
+├── dist/ # Compiled code (auto-generated)
+├── Dockerfile # Production Dockerfile
+├── Dockerfile.dev # Development Dockerfile with hot reload
+├── docker-compose.yml
+├── .dockerignore
+├── package.json
+├── pnpm-lock.yaml
+└── README.md
 
-```bash
-# unit tests
-$ pnpm run test
+yaml
+Copy code
 
-# e2e tests
-$ pnpm run test:e2e
+---
 
-# test coverage
-$ pnpm run test:cov
-```
+## Environment Variables
 
-## Deployment
+You can create a `.env` file in the root of your project or set environment variables in `docker-compose.yml`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Example `.env`:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+MONGO_URI=mongodb://mongo:27017/nest_crud
+PORT=3000
+Development Setup (Hot Reload)
+Make sure Dockerfile.dev exists and supports hot reload (with pnpm run start:dev).
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+Start the containers:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+bash
+Copy code
+docker compose -f docker-compose.yml up --build
+The NestJS app will start in development mode with hot reload.
 
-## Resources
+Open your browser at: http://localhost:3000
 
-Check out a few resources that may come in handy when working with NestJS:
+Any changes in src/ will automatically reload the application inside the container.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Production Setup
+Build the Docker image for production:
 
-## Support
+bash
+Copy code
+docker build -t nest-crud-api .
+Start the container:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+bash
+Copy code
+docker run -p 3000:3000 nest-crud-api
+Make sure MongoDB is running and accessible at mongodb://mongo:27017/nest_crud.
 
-## Stay in touch
+Your NestJS app will now run in production mode using the compiled dist/main.js.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Docker Compose Setup (Recommended)
+docker-compose.yml is configured to run both API and MongoDB containers.
 
-## License
+To start both services:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# nest-crud
+bash
+Copy code
+docker compose up --build
+Access the app at: http://localhost:3000
+
+The api service depends on mongo, so MongoDB will start first.
+
+The app will automatically connect to MongoDB using the service name mongo.
+
+Making Code Changes
+Development (hot reload):
+
+Any changes in src/ are automatically reflected in the container.
+
+No need to rebuild the Docker image for each change.
+
+Production:
+
+After code changes, you need to rebuild the image:
+
+bash
+Copy code
+docker compose build
+docker compose up
+Node modules are installed inside the container; no need to install locally unless you want to run tests outside Docker.
+
+Cleanup
+Stop containers:
+
+bash
+Copy code
+docker compose down
+Remove all containers and volumes (optional):
+
+bash
+Copy code
+docker compose down -v
+Troubleshooting
+MongoDB connection error:
+
+Ensure the MONGO_URI points to mongo (the Docker service name) and not localhost.
+
+Check that the MongoDB container is running:
+
+bash
+Copy code
+docker ps
+Hot reload not working:
+
+Ensure the volumes in docker-compose.yml correctly map your local src/ directory to /app/src.
+
+References
+NestJS Documentation
+
+Docker Documentation
+
+MongoDB Docker Image
+
+Quick Start Commands
+Development:
+
+bash
+Copy code
+docker compose up --build
+Production:
+
+bash
+Copy code
+docker build -t nest-crud-api .
+docker run -p 3000:3000 nest-crud-api
+yaml
+
